@@ -1,11 +1,12 @@
 import type { PlayTheme } from "../theme";
 
 type NumberPanelProps = {
+  feedbackKey: number;
   value: number;
   theme: PlayTheme;
 };
 
-export function NumberPanel({ value, theme }: NumberPanelProps) {
+export function NumberPanel({ feedbackKey, value, theme }: NumberPanelProps) {
   return (
     <div className="flex min-h-0 items-center justify-center">
       <div
@@ -22,7 +23,10 @@ export function NumberPanel({ value, theme }: NumberPanelProps) {
           <span className="absolute bottom-[22%] left-1/2 h-3 w-8 -translate-x-1/2 rounded-b-full border-b-4 border-white sm:w-10" />
         </div>
         <output
-          className="font-rounded text-[clamp(8rem,22vw,18rem)] font-black leading-none"
+          key={feedbackKey}
+          className={`font-rounded text-[clamp(8rem,22vw,18rem)] font-black leading-none ${
+            feedbackKey > 0 ? "number-pop" : ""
+          }`}
           style={{
             color: theme.numeral,
             textShadow: `0 0.08em 0 ${theme.numeralShadow}, 0 0.14em 0 rgba(15, 23, 42, 0.12)`,

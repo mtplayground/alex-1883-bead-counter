@@ -139,6 +139,7 @@ export function BeadTray({
                 {bead ? (
                   <Bead
                     color={bead.color}
+                    isNew={slot === beads.length - 1}
                     label={`Bead ${slot + 1} on the rod`}
                   />
                 ) : null}
