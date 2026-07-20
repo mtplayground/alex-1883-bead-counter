@@ -1,6 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Celebration } from "../components/Celebration";
 import { NumberPanel } from "../components/NumberPanel";
 import { BeadTray } from "../components/BeadTray";
+import { WelcomeMoment } from "../components/WelcomeMoment";
 import { useBeadAudio } from "../hooks/useBeadAudio";
 import { useBeadCounter } from "../hooks/useBeadCounter";
 import { getSessionTheme } from "../theme";
@@ -8,17 +10,36 @@ import { getSessionTheme } from "../theme";
 export function PlayScreen() {
   const theme = useMemo(() => getSessionTheme(), []);
   const beadCounter = useBeadCounter();
-  const playBeadSound = useBeadAudio();
+  const { playBeadSound, playCelebrationSound } = useBeadAudio();
+  const [celebrationKey, setCelebrationKey] = useState(0);
   const [feedbackKey, setFeedbackKey] = useState(0);
+  const [showWelcome, setShowWelcome] = useState(true);
+
+  useEffect(() => {
+    const welcomeTimer = window.setTimeout(() => {
+      setShowWelcome(false);
+    }, 4200);
+
+    return () => window.clearTimeout(welcomeTimer);
+  }, []);
 
   function handleAddBead() {
     if (!beadCounter.canAddBead) {
       return;
     }
 
+    const willReachTen = beadCounter.beads.length === 9;
     beadCounter.addBead();
-    playBeadSound();
+    setShowWelcome(false);
     setFeedbackKey((currentKey) => currentKey + 1);
+
+    if (willReachTen) {
+      playCelebrationSound();
+      setCelebrationKey((currentKey) => currentKey + 1);
+      return;
+    }
+
+    playBeadSound();
   }
 
   return (
@@ -41,6 +62,8 @@ export function PlayScreen() {
           onAddBead={handleAddBead}
           theme={theme}
         />
+        <WelcomeMoment visible={showWelcome} />
+        <Celebration celebrationKey={celebrationKey} />
       </section>
     </main>
   );
