@@ -17,7 +17,7 @@ export function PlayScreen() {
         className="mx-auto grid min-h-dvh w-full max-w-7xl grid-rows-[minmax(15rem,42vh)_1fr] gap-5 px-5 py-5 sm:px-8 lg:px-10"
         aria-label="Bead counter play space"
       >
-        <NumberPanel value={0} theme={theme} />
+        <NumberPanel value={beadCounter.beads.length} theme={theme} />
         <BeadTray
           beads={beadCounter.beads}
           canAddBead={beadCounter.canAddBead}
