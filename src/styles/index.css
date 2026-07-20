@@ -94,7 +94,104 @@ select {
 
 @media (prefers-reduced-motion: reduce) {
   .bead-bounce,
-  .number-pop {
+  .number-pop,
+  .welcome-moment,
+  .welcome-dot,
+  .welcome-target,
+  .celebration-burst,
+  .celebration-piece {
     animation-duration: 1ms;
+  }
+}
+
+.welcome-moment {
+  animation: welcome-fade 4200ms ease-in-out forwards;
+}
+
+.welcome-dot {
+  animation: welcome-hop 1300ms ease-in-out infinite;
+}
+
+.welcome-dot-delay {
+  animation-delay: 180ms;
+}
+
+.welcome-target {
+  animation: welcome-pulse 1300ms ease-in-out infinite;
+}
+
+.celebration-burst {
+  animation: celebration-shell 1700ms ease-out forwards;
+}
+
+.celebration-piece {
+  animation: celebration-piece 1450ms cubic-bezier(0.16, 0.85, 0.26, 1)
+    forwards;
+  animation-delay: var(--piece-delay);
+}
+
+@keyframes welcome-fade {
+  0%,
+  72% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes welcome-hop {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-16%) scale(1.05);
+  }
+}
+
+@keyframes welcome-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes celebration-shell {
+  0% {
+    opacity: 0;
+    transform: scale(0.76);
+  }
+  12%,
+  72% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes celebration-piece {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+  12% {
+    opacity: 1;
+  }
+  74% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--piece-x)), calc(-50% + var(--piece-y)))
+      scale(1.08);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--piece-x)), calc(-50% + var(--piece-y) + 8vh))
+      scale(0.9);
   }
 }
