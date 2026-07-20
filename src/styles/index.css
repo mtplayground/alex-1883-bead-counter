@@ -26,6 +26,7 @@ body,
 body {
   margin: 0;
   overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button,
@@ -33,4 +34,20 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+.bead-preview {
+  cursor: default;
+  position: relative;
+}
+
+.bead-preview::after {
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 9999px;
+  content: "";
+  height: 28%;
+  left: 22%;
+  position: absolute;
+  top: 18%;
+  width: 28%;
 }
