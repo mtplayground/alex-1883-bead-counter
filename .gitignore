@@ -11,3 +11,6 @@ dist/
 .pipeline-state.json
 .gitkeep
 .progress
+
+.env*
+.deploy_url
