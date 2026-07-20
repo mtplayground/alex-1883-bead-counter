@@ -1,0 +1,50 @@
+# Architecture Plan
+
+## Product Context
+
+Build `alex-1883-bead-counter` as a React single-page web app styled with Tailwind. The app opens directly into one full-screen play space for children ages 3-5: a large number display above a bead rod/tray. There are no menus, routes, levels, or reading-dependent flows.
+
+## Module Structure
+
+- `src/main.tsx`: React bootstrap.
+- `src/App.tsx`: top-level app shell that renders the single play screen.
+- `src/screens/PlayScreen.tsx`: full-screen layout, count state ownership, coordination between display, bead tray, audio, animation, welcome, and celebration.
+- `src/components/NumberDisplay.tsx`: large friendly numeral bound directly to bead count.
+- `src/components/BeadTray.tsx`: rod/tray layout, bead placement slots, tap and drag event wiring.
+- `src/components/Bead.tsx`: chunky bead visuals, selected/settling/celebrating animation states.
+- `src/components/WelcomeMoment.tsx`: first-open, non-blocking visual invitation to play.
+- `src/components/Celebration.tsx`: milestone feedback when count reaches 10.
+- `src/hooks/useBeadCounter.ts`: shared bead/count state, add/remove helpers, max-count guard.
+- `src/hooks/useBeadAudio.ts`: user-gesture-safe playback of bundled chime/pop and celebration sounds.
+- `src/styles/index.css`: Tailwind entry, global layout constraints, CSS variables for theme colors.
+- `src/assets/audio/`: bundled gentle feedback sounds.
+- `src/types.ts`: shared bead and UI animation types if they become useful across components.
+
+## Shared Types and State
+
+- `Bead = { id: string; color: string; slot: number; createdAt: number }`
+- `BeadCount = number`, constrained from `0` to `10`.
+- `FeedbackKind = "place" | "remove" | "welcome" | "ten"`
+- `ThemeVariant` for bright background/color variations selected on first render or session start.
+
+`PlayScreen` should own the canonical bead array. The live number is derived from `beads.length`, never maintained separately.
+
+## Issue Dependencies
+
+- Issue #1 creates the React/Tailwind app shell and one responsive play screen.
+- Issue #2 builds on the shell with the kid-friendly visual theme and theme variants.
+- Issue #3 depends on the play screen and introduces bead state plus tap/drag interactions.
+- Issue #4 depends on bead state and binds the number display to the bead count.
+- Issue #5 depends on beads and number binding to trigger gentle sound and animation per placed bead.
+- Issue #6 depends on the feedback system for the reaching-10 celebration and first-open welcome.
+
+## Key Design Decisions
+
+- Use a single React route and keep all gameplay on the first screen.
+- Prefer pointer events for unified touch and mouse support.
+- Keep bead interactions direct and forgiving: large hit targets, simple add/remove behavior, and no failure states.
+- Cap placed beads at 10 in state and UI.
+- Derive display state from bead state to preserve one-to-one bead/count mapping.
+- Bundle audio assets locally and unlock playback from the first user gesture to satisfy browser autoplay rules.
+- Use CSS/Tailwind animations for bead bounce, number pop, welcome, and celebration; add a small animation helper only if repeated timing logic becomes hard to read.
+- Avoid server-specific behavior unless later requirements introduce it; this should build as a static Vite React app.
