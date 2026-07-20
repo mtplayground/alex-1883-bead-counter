@@ -1,10 +1,12 @@
 import { useMemo } from "react";
 import { NumberPanel } from "../components/NumberPanel";
 import { BeadTray } from "../components/BeadTray";
+import { useBeadCounter } from "../hooks/useBeadCounter";
 import { getSessionTheme } from "../theme";
 
 export function PlayScreen() {
   const theme = useMemo(() => getSessionTheme(), []);
+  const beadCounter = useBeadCounter();
 
   return (
     <main
@@ -16,7 +18,12 @@ export function PlayScreen() {
         aria-label="Bead counter play space"
       >
         <NumberPanel value={0} theme={theme} />
-        <BeadTray theme={theme} />
+        <BeadTray
+          beads={beadCounter.beads}
+          canAddBead={beadCounter.canAddBead}
+          onAddBead={beadCounter.addBead}
+          theme={theme}
+        />
       </section>
     </main>
   );

@@ -36,12 +36,11 @@ select {
   font: inherit;
 }
 
-.bead-preview {
-  cursor: default;
+.bead-shape {
   position: relative;
 }
 
-.bead-preview::after {
+.bead-shape::after {
   background: rgba(255, 255, 255, 0.78);
   border-radius: 9999px;
   content: "";
